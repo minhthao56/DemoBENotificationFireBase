@@ -25,40 +25,45 @@ const options = {
   timeToLive: 60 * 60 * 24,
 };
 
-const server = http.createServer((req, res) => {
-  req.on("data", (data) => {
-    const token = JSON.parse(data);
+const tokenFake =
+  "eE1hx7uBSjqZx4gw8AkM7b:APA91bGdGWiM4BBpxkYvV5yv3mg9f4gmlqyh9Nz2YiGIegpZklYj8i8hmKigAVhthmfo81s0aABVlp0lw_XIIfdjI8Eqa33y7h0CJyPRJgR3w30O_4w2uiHh3kxmFjsFIyFOu9QXkUdb";
 
-    // send messages to firebase
-    admin
-      .messaging()
-      .sendToDevice(token.token, payload, options)
-      .then((res) => {
-        console.log("Successfully sent message:", res);
-        console.log(res.results[0].error);
-      })
-      .catch((err) => {
-        console.log("Error sending message:", err);
-      });
+// router "/" of sever
 
-    ///End send...
-  });
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ status: "Success!!!" }));
-});
+// const server = http.createServer((req, res) => {
+//   req.on("data", (data) => {
+//     const token = JSON.parse(data);
 
-// admin
-//   .messaging()
-//   .sendToDevice(tokenTest, payload, options)
-//   .then((res) => {
-//     console.log("Successfully sent message:", res);
-//     console.log(res.results[0].error);
-//   })
-//   .catch((err) => {
-//     console.log("Error sending message:", err);
+//     // send messages to firebase
+//     admin
+//       .messaging()
+//       .sendToDevice(token.token, payload, options)
+//       .then((res) => {
+//         console.log("Successfully sent message:", res);
+//         console.log(res.results[0].error);
+//       })
+//       .catch((err) => {
+//         console.log("Error sending message:", err);
+//       });
+
+//     ///End send...
 //   });
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Content-Type", "application/json");
+//   res.end(JSON.stringify({ status: "Success!!!" }));
+// });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+admin
+  .messaging()
+  .sendToDevice(tokenFake, payload, options)
+  .then((res) => {
+    console.log("Successfully sent message:", res);
+    console.log(res.results[0].error);
+  })
+  .catch((err) => {
+    console.log("Error sending message:", err);
+  });
+
+// server.listen(port, hostname, () => {
+//   console.log(`Server running at http://${hostname}:${port}/`);
+// });
